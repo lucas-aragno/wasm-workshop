@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+  <body>
+    <wasm-button></wasm-button>
+    <script src="fib.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        class WasmButton extends HTMLElement {
+          constructor() {
+            super();
+
+            let html = `
+              <div>
+                <button>
+                  Click me!
+                </button>
+                <input value="5" type="number"/>
+              </div>
+            `;
+
+            this.attachShadow({ mode: 'open' })
+            this.shadowRoot.innerHTML = html;
+            this.shadowRoot.querySelector('button').addEventListener('click', () => {
+              let js_wrapped_fib = Module.cwrap('fib', 'number', ['number'])
+              alert(`Fibonacci result is: ${js_wrapped_fib(this.shadowRoot.querySelector('input').value)}`)
+            });
+          }
+        }
+        customElements.define('wasm-button', WasmButton);
+      })
+    </script>
+  </body>
+</html>
