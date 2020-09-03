@@ -1,5 +1,4 @@
 const rust = import("./pkg");
-
 rust.then(module => {
   console.log('max month is ', module.calculate_max([
     {month: 'jan', value: 100},
